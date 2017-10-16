@@ -33,6 +33,7 @@ export class TableHandlerRegistry {
     t => new WorkPackageStateLinksHandler(t),
     // Clicking on the row (not within a cell)
     t => new RowClickHandler(t),
+    // Double Clicking on the row (not within a cell)
     t => new RowDoubleClickHandler(t),
     // Clicking on group headers
     t => new GroupRowHandler(t),

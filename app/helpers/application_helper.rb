@@ -420,7 +420,6 @@ module ApplicationHelper
     if args.empty?
       title << h(@project.name) if @project
       title += @html_title if @html_title
-      title << h(Setting.app_title)
     else
       @html_title ||= []
       @html_title += args
@@ -443,6 +442,9 @@ module ApplicationHelper
       css << 'controller-' + params[:controller]
       css << 'action-' + params[:action]
     end
+
+    css << "ee-banners-#{EnterpriseToken.show_banners? ? 'visible' : 'hidden'}"
+
     css.join(' ')
   end
 

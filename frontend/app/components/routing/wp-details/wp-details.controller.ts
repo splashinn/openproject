@@ -51,9 +51,25 @@ export class WorkPackageDetailsController extends WorkPackageViewController {
     if (!focusedWP) {
       focusState.putValue(wpId);
       this.wpTableSelection.setRowState(wpId, true);
-    } else if (!this.wpTableSelection.isSelected(wpId)) {
+    }
+
+    if (this.wpTableSelection.isEmpty) {
       this.wpTableSelection.setRowState(wpId, true);
     }
+
+    scopedObservable(
+      $scope,
+      this.states.focusedWorkPackage.values$())
+      .map(wpId => wpId.toString())
+      .distinctUntilChanged()
+      .subscribe((newId) => {
+        if (wpId !== newId && $state.includes('work-packages.list.details')) {
+          $state.go(
+            ($state.current.name as string),
+            {workPackageId: newId, focus: false }
+          );
+        }
+      });
   }
 
   public close() {

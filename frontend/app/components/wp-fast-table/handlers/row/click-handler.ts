@@ -15,7 +15,10 @@ export class RowClickHandler implements TableEventHandler {
   public keepTab:KeepTabService;
   public wpTableSelection:WorkPackageTableSelection;
 
-  constructor(table: WorkPackageTable) {
+  private clicks = 0;
+  private timer:number;
+
+  constructor(table:WorkPackageTable) {
     $injectFields(this, 'keepTab', '$state', 'states', 'wpTableSelection');
   }
 
@@ -31,8 +34,13 @@ export class RowClickHandler implements TableEventHandler {
     return jQuery(table.tbody);
   }
 
-  public handleEvent(table: WorkPackageTable, evt:JQueryEventObject) {
+  public handleEvent(table:WorkPackageTable, evt:JQueryEventObject) {
     let target = jQuery(evt.target);
+
+    // Ignore links
+    if (target.is('a') || target.parent().is('a')) {
+      return true;
+    }
 
     // Shortcut to any clicks within a cell
     // We don't want to handle these.
@@ -60,10 +68,6 @@ export class RowClickHandler implements TableEventHandler {
     // Thus save that row for the details view button.
     let [index, row] = table.findRenderedRow(classIdentifier);
     this.states.focusedWorkPackage.putValue(wpId);
-    this.$state.go(
-      this.keepTab.currentDetailsState,
-      { workPackageId: wpId, focus: true }
-    );
 
     // Update single selection if no modifier present
     if (!(evt.ctrlKey || evt.metaKey || evt.shiftKey)) {

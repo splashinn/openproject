@@ -48,7 +48,7 @@ angular
 function wpTable(keepTab:KeepTabService,
                  PathHelper:any,
                  columnsModal:any,
-                 contextMenu:ContextMenuService) {
+                 contextMenu:ContextMenuService):any {
   return {
     restrict: 'E',
     replace: true,
@@ -91,9 +91,9 @@ export class WorkPackagesTableController {
 
   private readonly scrollSyncUpdate = createScrollSync(this.$element);
 
-  private table:HTMLElement;
+  public table:HTMLElement;
 
-  private timeline:HTMLElement;
+  public timeline:HTMLElement;
 
   constructor(private $scope:ng.IScope,
               public $element:ng.IAugmentedJQuery,
@@ -158,11 +158,6 @@ export class WorkPackagesTableController {
     this.table = tableAndTimeline[0];
     this.timeline = tableAndTimeline[1];
 
-    // Subscribe to column changes and calculate how to
-    // partition the width between table and timeline
-    wpTableColumns.observeOnScope($scope)
-      .subscribe(c => this.changeTimelineWidthOnColumnCountChange(c));
-
     // sync hover from table to timeline
     const wpTableHoverSync = new WpTableHoverSync(this.$element);
     wpTableHoverSync.activate();
@@ -195,31 +190,4 @@ export class WorkPackagesTableController {
 
     return [$tableSide[0], $timelineSide[0]];
   }
-
-  private changeTimelineWidthOnColumnCountChange(columns:WorkPackageTableColumns) {
-    // const tableAndTimeline = this.getTableAndTimelineElement();
-    // if (tableAndTimeline === null) {
-    //   return;
-    // }
-    // const [table, timeline] = tableAndTimeline;
-    const colCount = columns.current.length;
-
-    if (colCount === 0) {
-      this.table.style.flex = `0 1 45px`;
-      this.timeline.style.flex = `1 1`;
-    } else if (colCount === 1) {
-      this.table.style.flex = `1 1`;
-      this.timeline.style.flex = `4 1`;
-    } else if (colCount === 2) {
-      this.table.style.flex = `1 1`;
-      this.timeline.style.flex = `3 1`;
-    } else if (colCount === 3) {
-      this.table.style.flex = `1 1`;
-      this.timeline.style.flex = `2 1`;
-    } else if (colCount === 4) {
-      this.table.style.flex = `2 1`;
-      this.timeline.style.flex = `3 1`;
-    }
-  }
-
 }

@@ -44,6 +44,8 @@ import {WorkPackageEditFieldGroupController} from './wp-edit-field-group.directi
 import {ClickPositionMapper} from '../../common/set-click-position/set-click-position';
 import {WorkPackageEditFieldHandler} from '../../wp-edit-form/work-package-edit-field-handler';
 import {WorkPackageEditingService} from '../../wp-edit-form/work-package-editing-service';
+import {SelectionHelpers} from '../../../helpers/selection-helpers';
+import {debugLog} from '../../../helpers/debug_output';
 
 export class WorkPackageEditFieldController {
   public wpEditFieldGroup:WorkPackageEditFieldGroupController;
@@ -76,7 +78,7 @@ export class WorkPackageEditFieldController {
   }
 
   public render() {
-    const el = this.fieldRenderer.render(this.resource, this.fieldName, this.displayPlaceholder);
+    const el = this.fieldRenderer.render(this.resource, this.fieldName, null, this.displayPlaceholder);
     this.displayContainer[0].innerHTML = '';
     this.displayContainer[0].appendChild(el);
   }
@@ -103,12 +105,20 @@ export class WorkPackageEditFieldController {
   }
 
   public activateIfEditable(event:JQueryEventObject) {
+    // Ignore selections
+    if (SelectionHelpers.hasSelectionWithin(event.target)) {
+      debugLog(`Not activating ${this.fieldName} because of active selection within`);
+      return true;
+    }
+
     if (this.isEditable) {
       this.handleUserActivate(event);
     }
 
     this.contextMenu.close();
     event.stopImmediatePropagation();
+
+    return false;
   }
 
   public activate(noWarnings:boolean = false):Promise<WorkPackageEditFieldHandler> {
@@ -126,8 +136,19 @@ export class WorkPackageEditFieldController {
   }
 
   public handleUserActivate(evt:JQueryEventObject|null) {
-    // Get the position where the user clicked.
-    const positionOffset = evt ? ClickPositionMapper.getPosition(evt) : 0;
+    let positionOffset = 0;
+
+    if (evt) {
+      // Skip activation if the user clicked on a link
+      const target = jQuery(evt.target);
+
+      if (target.closest('a', this.displayContainer[0]).length > 0) {
+        return true;
+      }
+
+      // Get the position where the user clicked.
+      positionOffset = ClickPositionMapper.getPosition(evt);
+    }
 
     this.activate()
       .then((handler) => {
@@ -135,6 +156,8 @@ export class WorkPackageEditFieldController {
         const input = handler.element.find('input');
         ClickPositionMapper.setPosition(input, positionOffset);
       });
+
+    return false;
   }
 
   public get displayContainer() {

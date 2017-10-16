@@ -60,10 +60,10 @@ GIT
 
 GIT
   remote: https://github.com/opf/openproject-translations.git
-  revision: ca54b80a76cb5f6dff1d2bbb4a3c927326d23228
-  branch: release/7.2
+  revision: 1adbcf87f5a8190556bcb0cb1b9ce1367b91d095
+  branch: release/7.3
   specs:
-    openproject-translations (7.2.1)
+    openproject-translations (7.3.1)
       crowdin-api (~> 0.4.1)
       mixlib-shellout (~> 2.1.0)
       rails (~> 5.0.0)
@@ -346,9 +346,11 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
+    meta-tags (2.4.1)
+      actionpack (>= 3.2.0, < 5.2)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     minisyntax (0.2.5)
     minitest (5.10.2)
     mixlib-shellout (2.1.0)
@@ -363,8 +365,8 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (4.2.0.334)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     oj (3.3.2)
     okcomputer (1.16.0)
     openproject-token (1.0.1)
@@ -558,6 +560,7 @@ GEM
     syck (1.3.0)
     sys-filesystem (1.1.7)
       ffi
+    test-prof (0.1.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -659,11 +662,12 @@ DEPENDENCIES
   launchy (~> 2.4.3)
   letter_opener
   livingstyleguide (~> 2.0.1)
+  meta-tags (~> 2.4.1)
   multi_json (~> 1.12.1)
   mysql2 (~> 0.4.4)
   net-ldap (~> 0.16.0)
   newrelic_rpm
-  nokogiri (~> 1.8.0)
+  nokogiri (~> 1.8.1)
   oj (~> 3.3.2)
   okcomputer (~> 1.16.0)
   omniauth!
@@ -718,6 +722,7 @@ DEPENDENCIES
   svg-graph (~> 2.1.0)
   syck (~> 1.3.0)
   sys-filesystem (~> 1.1.4)
+  test-prof
   thin (~> 1.7.2)
   timecop (~> 0.9.0)
   transactional_lock!
@@ -730,7 +735,7 @@ DEPENDENCIES
   will_paginate (~> 3.1.0)
 
 RUBY VERSION
-   ruby 2.4.1p111
+   ruby 2.4.2p198
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

@@ -51,7 +51,6 @@ export class WorkPackageRelationsController {
               protected wpRelations:WorkPackageRelationsService,
               protected wpCacheService:WorkPackageCacheService) {
 
-    this.wpRelations.require(this.workPackage.id, true);
     scopedObservable(this.$scope,
       this.wpRelations.state(this.workPackage.id).values$())
       .subscribe((relations:RelationsStateValue) => {
@@ -138,7 +137,7 @@ export class WorkPackageRelationsController {
   }
 }
 
-function wpRelationsDirective() {
+function wpRelationsDirective():any {
   return {
     restrict: 'E',
     replace: true,

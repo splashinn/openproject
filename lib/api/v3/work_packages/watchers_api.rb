@@ -26,6 +26,8 @@
 # See doc/COPYRIGHT.rdoc for more details.
 #++
 
+require 'hashie'
+
 module API
   module V3
     module WorkPackages
@@ -44,7 +46,7 @@ module API
               users,
               api_v3_paths.users,
               page: to_i_or_nil(params[:offset]),
-              per_page: to_i_or_nil(params[:pageSize]),
+              per_page: resolve_page_size(params[:pageSize]),
               current_user: current_user
             )
           else
